@@ -109,7 +109,7 @@ def createUser(driver, user):
         inputName = wait.until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR,
-                 '.info-item:nth-of-type(1) .el-input__inner')),
+                 '.info-item:nth-of-type(2) .el-input__inner')),
             message='找不到 用户名输入栏')
         inputName.send_keys(Keys.CONTROL + 'a')
         inputName.send_keys(name)
@@ -119,6 +119,29 @@ def createUser(driver, user):
             message='找不到 修改资料按键')
         logging.debug('个人资料-修改资料：' + setInfoBtn.text)
         setInfoBtn.click()
+        sleep(1)
+
+        # 退出
+        logoutBtn = wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, '.loginout')),
+            message='找不到 退出按键')
+        logoutBtn.click()
+        sleep(1)
+
+        # # 申请权限
+        # permissionBtn = wait.until(
+        #     EC.element_to_be_clickable((By.CSS_SELECTOR, '.apply-permission')),
+        #     message='找不到 申请权限按键')
+        # permissionBtn.click()
+        # sleep(1)
+
+        # # 填写资料
+        # infoInputs = wait.until(
+        #     EC.visibility_of_all_elements_located((By.CSS_SELECTOR,
+        #                                            '.submit-info-input')),
+        #     message='找不到 信息输入栏')
+        # for infoInput in infoInputs:
+        #     infoInput.send_keys(name)
 
         driver.quit()
         return True

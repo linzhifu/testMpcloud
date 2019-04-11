@@ -58,20 +58,6 @@ def goToElement(element, driver):
     sleep(time)
 
 
-# 页面加载
-def pageFinish(driver):
-    # 加载时间最大为10s
-    i = 10
-    STR_READY_STATE = ''
-    while STR_READY_STATE != 'complete':
-        if i:
-            sleep(time)
-            STR_READY_STATE = driver.execute_script(
-                'return document.readyState')
-        else:
-            raise Exception('页面加载失败')
-
-
 # 登录
 def login(user, wait):
     # 点击密码登录
@@ -162,6 +148,7 @@ def updateUserInfo(user, wait):
         message='找不到 修改资料按键')
     logging.debug('个人资料-修改资料：' + setInfoBtn.text)
     setInfoBtn.send_keys(Keys.ENTER)
+    sleep(time)
 
 
 # 还原用户名，方便后续测试
@@ -195,8 +182,6 @@ def checkUserInfo(user, wait):
     myTeamBtn.send_keys(Keys.ENTER)
     sleep(time)
 
-    pageFinish(driver)
-
     # 核对team
     getTeams = wait.until(
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'tbody tr')),
@@ -213,8 +198,6 @@ def checkUserInfo(user, wait):
     goTop(driver)
     backBtn.send_keys(Keys.ENTER)
     sleep(time)
-
-    pageFinish(driver)
 
     # 用户名
     inputName = wait.until(
@@ -721,11 +704,11 @@ def addMod(user, wait, driver):
 # 添加角色
 def addProRole(user, wait, driver):
     # 点击用户列表按钮
-    userListBtn = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
-        message='找不到 用户列表tab按键')
-    logging.debug('产品型号-用户列表：' + userListBtn.text)
-    userListBtn.click()
+    # userListBtn = wait.until(
+    #     EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-0')),
+    #     message='找不到 用户列表tab按键')
+    # logging.debug('产品型号-用户列表：' + userListBtn.text)
+    # userListBtn.click()
 
     # 用户列表下拉按钮
     userRoleListBtn = wait.until(
@@ -825,15 +808,6 @@ def addProRole(user, wait, driver):
 
                     # 刷新用户列表
                     sleep(time + 3)
-                    isFinish = wait.until(
-                        EC.text_to_be_present_in_element(
-                            (By.CSS_SELECTOR, '.user-finish'), '已加载'),
-                        message='用户刷新加载失败')
-
-                    if not isFinish:
-                        raise Exception('用户刷新加载失败')
-
-                    sleep(time)
 
                     break
 
@@ -844,13 +818,13 @@ def addProRole(user, wait, driver):
         user_ = wait.until(
             EC.visibility_of_element_located((
                 By.CSS_SELECTOR,
-                '[aria-labelledby="tab-1"] tbody tr:nth-of-type(%d) td:nth-of-type(%d)'
+                '[aria-labelledby="tab-0"] tbody tr:nth-of-type(%d) td:nth-of-type(%d)'
                 % (i, 2))),
             message='获取用户列表信息失败').text
         role = wait.until(
             EC.visibility_of_element_located((
                 By.CSS_SELECTOR,
-                '[aria-labelledby="tab-1"] tbody tr:nth-of-type(%d) td:nth-of-type(%d)'
+                '[aria-labelledby="tab-0"] tbody tr:nth-of-type(%d) td:nth-of-type(%d)'
                 % (i, 4))),
             message='获取用户列表信息失败').text
         if user_ == user['NAME'] and role == '测试工程师':
@@ -878,13 +852,6 @@ def addProRole(user, wait, driver):
 
         # 刷新用户列表
         sleep(time)
-        isFinish = wait.until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.user-finish'),
-                                             '已加载'),
-            message='用户刷新加载失败')
-
-        if not isFinish:
-            raise Exception('用户刷新加载失败')
 
         goTop(driver)
         sleep(0.5)
@@ -1108,9 +1075,6 @@ def modifyProInfo(user, wait):
 
 
 def searchPro(user, wait):
-    # 刷新，等待加载完产品列表
-    pageFinish(driver)
-
     # 获取所有产品
     products = wait.until(
         EC.visibility_of_any_elements_located((By.CSS_SELECTOR,
@@ -1263,7 +1227,6 @@ def searchPro(user, wait):
     logging.debug('产品管理-产品列表：' + searchTestProBtn.get_attribute('innerText'))
     searchTestProBtn.click()
     sleep(time)
-    pageFinish(driver)
 
     # 获取所有产品类型
     modules = wait.until(
@@ -1441,51 +1404,44 @@ def test_modifyProMod(user, wait, driver):
 
             # 等待订单加载
             sleep(time)
-            orderFinish = wait.until(
-                EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, '.order-finish'), '订单已加载'),
-                message='订单加载失败')
-
-            if orderFinish is False:
-                raise Exception('订单加载失败')
 
             # 检查订单显示
             # ORDER1
-            if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
-                raise Exception(config.ORDER_1['NUM'] + ' 订单号显示错误：' +
-                                getTeamInfo(wait, 1, 2))
-            if getTeamInfo(wait, 1, 3) != config.ORDER_1['ONLINE']:
-                raise Exception(config.ORDER_1['ONLINE'] + ' 在线数量显示错误：' +
-                                getTeamInfo(wait, 1, 3))
-            if getTeamInfo(wait, 1, 4) != config.ORDER_1['OFFLINE']:
-                raise Exception(config.ORDER_1['OFFLINE'] + ' 离线数量显示错误：' +
-                                getTeamInfo(wait, 1, 4))
-            if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
-                raise Exception(config.ORDER_1['FACTORY'] + ' 工厂显示错误：' +
-                                getTeamInfo(wait, 1, 5))
-            if getTeamInfo(wait, 1, 6) != config.authTime:
-                raise Exception(config.authTime + ' 有效时间显示错误：' +
-                                getTeamInfo(wait, 1, 6))
-            # if getTeamInfo(wait, 1, 7) != config.USER_PRO_PE['NAME']:
-            #     raise Exception(config.USER_PRO_PE['NAME'] + ' 创建人显示错误：' +
-            #                     getTeamInfo(wait, 1, 7))
+            # if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+            #     raise Exception(config.ORDER_1['NUM'] + ' 订单号显示错误：' +
+            #                     getTeamInfo(wait, 1, 2))
+            # if getTeamInfo(wait, 1, 3) != config.ORDER_1['ONLINE']:
+            #     raise Exception(config.ORDER_1['ONLINE'] + ' 在线数量显示错误：' +
+            #                     getTeamInfo(wait, 1, 3))
+            # if getTeamInfo(wait, 1, 4) != config.ORDER_1['OFFLINE']:
+            #     raise Exception(config.ORDER_1['OFFLINE'] + ' 离线数量显示错误：' +
+            #                     getTeamInfo(wait, 1, 4))
+            # if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
+            #     raise Exception(config.ORDER_1['FACTORY'] + ' 工厂显示错误：' +
+            #                     getTeamInfo(wait, 1, 5))
+            # if getTeamInfo(wait, 1, 6) != config.authTime:
+            #     raise Exception(config.authTime + ' 有效时间显示错误：' +
+            #                     getTeamInfo(wait, 1, 6))
+            # # if getTeamInfo(wait, 1, 7) != config.USER_PRO_PE['NAME']:
+            # #     raise Exception(config.USER_PRO_PE['NAME'] + ' 创建人显示错误：' +
+            # #                     getTeamInfo(wait, 1, 7))
 
-            # ORDER2
-            if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
-                raise Exception(config.ORDER_2['NUM'] + ' 订单号显示错误：' +
-                                getTeamInfo(wait, 2, 2))
-            if getTeamInfo(wait, 2, 3) != config.ORDER_2['ONLINE']:
-                raise Exception(config.ORDER_2['ONLINE'] + ' 在线数量显示错误：' +
-                                getTeamInfo(wait, 2, 3))
-            if getTeamInfo(wait, 2, 4) != config.ORDER_2['OFFLINE']:
-                raise Exception(config.ORDER_2['OFFLINE'] + ' 离线数量显示错误：' +
-                                getTeamInfo(wait, 2, 4))
-            if getTeamInfo(wait, 2, 5) != config.ORDER_2['FACTORY']:
-                raise Exception(config.ORDER_2['FACTORY'] + ' 工厂显示错误：' +
-                                getTeamInfo(wait, 2, 5))
-            if getTeamInfo(wait, 2, 6) != config.authTime:
-                raise Exception(config.authTime + '有效时间显示错误：' +
-                                getTeamInfo(wait, 2, 6))
+            # # ORDER2
+            # if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
+            #     raise Exception(config.ORDER_2['NUM'] + ' 订单号显示错误：' +
+            #                     getTeamInfo(wait, 2, 2))
+            # if getTeamInfo(wait, 2, 3) != config.ORDER_2['ONLINE']:
+            #     raise Exception(config.ORDER_2['ONLINE'] + ' 在线数量显示错误：' +
+            #                     getTeamInfo(wait, 2, 3))
+            # if getTeamInfo(wait, 2, 4) != config.ORDER_2['OFFLINE']:
+            #     raise Exception(config.ORDER_2['OFFLINE'] + ' 离线数量显示错误：' +
+            #                     getTeamInfo(wait, 2, 4))
+            # if getTeamInfo(wait, 2, 5) != config.ORDER_2['FACTORY']:
+            #     raise Exception(config.ORDER_2['FACTORY'] + ' 工厂显示错误：' +
+            #                     getTeamInfo(wait, 2, 5))
+            # if getTeamInfo(wait, 2, 6) != config.authTime:
+            #     raise Exception(config.authTime + '有效时间显示错误：' +
+            #                     getTeamInfo(wait, 2, 6))
             # if getTeamInfo(wait, 2, 7) != config.USER_MOD_PE['NAME']:
             #     raise Exception(config.USER_MOD_PE['NAME'] + ' 创建人显示错误：' +
             #                     getTeamInfo(wait, 2, 7))
@@ -1672,7 +1628,7 @@ def relatedMptool(wait):
     inputSoftMod = wait.until(
         EC.visibility_of_element_located(
             (By.CSS_SELECTOR,
-             '.el-dialog__body .el-form-item:nth-of-type(1) input')),
+             '.el-dialog__body .relate-item:nth-of-type(2) input')),
         message='找不到 软件类型输入栏')
     inputSoftMod.click()
     sleep(time)
@@ -1694,7 +1650,7 @@ def relatedMptool(wait):
     inputSoft = wait.until(
         EC.visibility_of_element_located(
             (By.CSS_SELECTOR,
-             '.el-dialog__body .el-form-item:nth-of-type(2) input')),
+             '.el-dialog__body .relate-item:nth-of-type(3) input')),
         message='找不到 软件输入栏')
     inputSoft.click()
     sleep(time)
@@ -1715,7 +1671,7 @@ def relatedMptool(wait):
     # 确定
     confirmBtn = wait.until(
         EC.element_to_be_clickable(
-            (By.CSS_SELECTOR, '.el-dialog__footer button:nth-of-type(2)')),
+            (By.CSS_SELECTOR, '.el-dialog__body .relate-item:nth-of-type(4) button:nth-of-type(2)')),
         message='找不到 确定关联按键')
     logging.debug('关联量产工具-关联软件：' + confirmBtn.text)
     confirmBtn.click()
@@ -1928,7 +1884,6 @@ def searchAllOrder(wait):
 def searchOrder(user, wait):
     # 刷新
     sleep(time)
-    pageFinish(driver)
 
     # 按订单号查询
     searchByOrderNum(wait)
@@ -1938,6 +1893,15 @@ def searchOrder(user, wait):
 
     # 查询所有订单
     searchAllOrder(wait)
+
+
+# 点击退出
+def logout(user, wait, driver):
+    logoutBtn = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '.loginout')),
+        message='找不到退出按键')
+    logoutBtn.click()
+    sleep(time)
 
 
 # 用户资料
@@ -1955,7 +1919,7 @@ def userInfo(user, wait, driver):
         # 修改密码
         logging.info('修改密码')
         updatePassword(user, wait)
-        driver.get(config.URL)
+        logout(user, wait, driver)
         login(user, wait)
         checkUserInfo(user, wait)
         updatePassword(user, wait)
@@ -1974,9 +1938,7 @@ def userInfo(user, wait, driver):
             message='找不到 查看我的群组按键')
         logging.debug('个人中心-我的资料：' + myTeamBtn.text)
         myTeamBtn.send_keys(Keys.ENTER)
-
-        # 等待team列表刷新
-        pageFinish(driver)
+        sleep(time)
 
         # 添加Team
         logging.info('添加Team')
@@ -2042,7 +2004,6 @@ def proList(user, wait, driver):
         logging.debug('产品管理-产品列表：' + proLisBtn.text)
         proLisBtn.click()
         sleep(time)
-        pageFinish(driver)
 
         # 查询功能
         logging.info('查询产品列表')
@@ -2250,7 +2211,8 @@ if __name__ == '__main__':
         driver = webdriver.Chrome(options=opt)
         # driver = webdriver.Ie()
         OK = main(driver)
+        j = j - 1
         if OK:
-            j = j - 1
+            # j = j - 1
             i += 1
             print(i)

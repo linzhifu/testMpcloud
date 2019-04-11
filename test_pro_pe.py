@@ -656,7 +656,7 @@ def searchByOrderNum(wait):
         EC.visibility_of_element_located((By.CSS_SELECTOR,
                                           '.search-input input')),
         message='找不到 订单号查询输入')
-    inputOrderNum.send_keys(config.ORDER_1['NUM'])
+    inputOrderNum.send_keys(config.ORDER_2['NUM'])
 
     # 按订单号查询
     ordNumSearchBtn = wait.until(
@@ -668,11 +668,11 @@ def searchByOrderNum(wait):
     sleep(time)
 
     # 检查查询结果
-    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
-        raise Exception(config.ORDER_1['NUM'] + ' 订单号不对：' +
+    if getTeamInfo(wait, 1, 2) != config.ORDER_2['NUM']:
+        raise Exception(config.ORDER_2['NUM'] + ' 订单号不对：' +
                         getTeamInfo(wait, 1, 2))
-    if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
-        raise Exception(config.ORDER_1['FACTORY'] + ' 工厂不对：' +
+    if getTeamInfo(wait, 1, 5) != config.ORDER_2['FACTORY']:
+        raise Exception(config.ORDER_2['FACTORY'] + ' 工厂不对：' +
                         getTeamInfo(wait, 1, 5))
     if getTeamInfo(wait, 1, 6) != config.authTime:
         raise Exception(config.authTime + ' 有效时间不对：' + getTeamInfo(wait, 1, 6))
@@ -775,6 +775,15 @@ def searchOrder(user, wait):
     searchAllOrder(wait)
 
 
+# 点击退出
+def logout(user, wait, driver):
+    logoutBtn = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '.loginout')),
+        message='找不到退出按键')
+    logoutBtn.click()
+    sleep(time)
+
+
 # 用户资料
 def userInfo(user, wait, driver):
     if user['updateUserInfoEnable']:
@@ -790,7 +799,7 @@ def userInfo(user, wait, driver):
         # 修改密码
         logging.info('修改密码')
         updatePassword(user, wait)
-        driver.get(config.URL)
+        logout(user, wait, driver)
         login(user, wait)
         checkUserInfo(user, wait)
         updatePassword(user, wait)
@@ -1059,7 +1068,8 @@ if __name__ == '__main__':
         #     print("result:" + key + ":" + str(command_result[key]))
         # driver = webdriver.Ie()
         OK = main(driver)
+        j = j - 1
         if OK:
-            j = j - 1
+            # j = j - 1
             i += 1
             print(i)

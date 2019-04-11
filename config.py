@@ -3,10 +3,10 @@
 # 2A12vx5O
 import datetime
 # 测试用浏览器设置 0：谷歌 ，1：火狐 ，2：IE
-webBrower = 2
+webBrower = 1
 
 # 测试网站
-URL = 'https://www.wukoon-app.com'
+URL = 'https://mpstest.longsys.com'
 # URL = 'https://mps.longsys.com'
 
 # 测试文件下载路径
@@ -168,16 +168,16 @@ USER_ADMIN = {
     'LOGIN': 'Lin5535960',
 
     # TEAM 管理测 teamEable:0 不测试，1 测试
-    'teamEable': 1,
+    'teamEable': 0,
 
     # 新增产品 addProEable:0 不测试，1 测试
-    'addProEable': 1,
+    'addProEable': 0,
 
     # 产品列表(添加型号、角色) proListEable:0 不测试，1 测试
-    'proListEnable': 1,
+    'proListEnable': 0,
 
     # 上传软件 upSoftEnable:0 不测试，1 测试
-    'upSoftEnable': 1,
+    'upSoftEnable': 0,
 
     # 创建订单 createOrderEnable:0 不测试，1 测试
     'createOrderEnable': 1,
@@ -230,7 +230,7 @@ USER_PRO_PM = {
     'orderToolEnable': 1,
 
     # 订单列表 orderListEnable:0 不测试，1测试
-    'orderListEnable': 1,
+    'orderListEnable': 0,
 }
 
 # 型号-产品经理
@@ -333,7 +333,7 @@ USER_PRO_RD = {
     'softListEnable': 0,
 
     # 订单列表 orderListEnable:0 不测试，1测试
-    'orderListEnable': 1,
+    'orderListEnable': 0,
 
     # 添加样品 createSampleEnable:0 不测试，1 测试
     'createSampleEnable': 1,
@@ -400,7 +400,7 @@ USER_MOD_RD = {
 
     # 订单列表 orderListEnable:0 不测试，1测试
     'orderListEnable':
-    1,
+    0,
 
     # 添加样品 createSampleEnable:0 不测试，1 测试
     'createSampleEnable':
@@ -522,7 +522,7 @@ USER_PRO_TE = {
     'ROLE': [proMod['PRONAME_1'] + '-测试工程师', proMod['PRONAME_2'] + '-测试工程师'],
 
     # 测试修改资料，包括个人资料和密码 updateUserInfoEnable:0 不测试，1 测试
-    'updateUserInfoEnable': 1,
+    'updateUserInfoEnable': 0,
     'userName': 'TestProduct-产品测试工程师',
     'qq': '254082684',
     'im': 'Test',
@@ -530,14 +530,14 @@ USER_PRO_TE = {
     'passWord': '123456',
 
     # 测试team功能 teamEnable:0 不测试，1测试
-    'teamEnable': 1,
+    'teamEnable': 0,
     'teamName': 'Temp test team',
     'teamDes': 'Temp test add team',
     'modifyTeamName': 'Temp Team',
     'modifyTeamDes': 'Temp test modify team',
 
     # 测试产品列表功能 proLisEnable:0 不测试，1测试
-    'proLisEnable': 1,
+    'proLisEnable': 0,
 
     # 测试上传软件 upSoftEnable:0 不测试，1测试
     'upSoftEnable': 1,
@@ -546,10 +546,10 @@ USER_PRO_TE = {
     'softListEnable': 0,
 
     # 订单列表 orderListEnable:0 不测试，1测试
-    'orderListEnable': 1,
+    'orderListEnable': 0,
 
     # 添加样品 createSampleEnable:0 不测试，1 测试
-    'createSampleEnable': 1,
+    'createSampleEnable': 0,
 }
 
 # 型号-测试工程师
@@ -613,7 +613,7 @@ USER_MOD_TE = {
 
     # 订单列表 orderListEnable:0 不测试，1测试
     'orderListEnable':
-    1,
+    0,
 
     # 添加样品 createSampleEnable:0 不测试，1 测试
     'createSampleEnable':
@@ -632,7 +632,7 @@ USER_PRO_PMC = {
     'ROLE': [proMod['PRONAME_1'] + '-pmc', proMod['PRONAME_2'] + '-pmc'],
 
     # 测试修改资料，包括个人资料和密码 updateUserInfoEnable:0 不测试，1 测试
-    'updateUserInfoEnable': 1,
+    'updateUserInfoEnable': 0,
     'userName': 'TestProduct-产品PMC',
     'qq': '254082684',
     'im': 'Test',
@@ -640,7 +640,7 @@ USER_PRO_PMC = {
     'passWord': '123456',
 
     # 测试team功能 teamEnable:0 不测试，1测试
-    'teamEnable': 1,
+    'teamEnable': 0,
     'teamName': 'Temp test team',
     'teamDes': 'Temp test add team',
     'modifyTeamName': 'Temp Team',
@@ -744,7 +744,7 @@ USER_PRO_PE = {
     'ROLE': [proMod['PRONAME_1'] + '-产线工程师', proMod['PRONAME_2'] + '-产线工程师'],
 
     # 测试修改资料，包括个人资料和密码 updateUserInfoEnable:0 不测试，1 测试
-    'updateUserInfoEnable': 1,
+    'updateUserInfoEnable': 0,
     'userName': 'TestProduct-产线工程师',
     'qq': '254082684',
     'im': 'Test',
@@ -752,7 +752,7 @@ USER_PRO_PE = {
     'passWord': '123456',
 
     # 测试team功能 teamEnable:0 不测试，1测试
-    'teamEnable': 1,
+    'teamEnable': 0,
     'teamName': 'Temp test team',
     'teamDes': 'Temp test add team',
     'modifyTeamName': 'Temp Team',
@@ -785,7 +785,7 @@ USER_MOD_PE = {
 
     # 测试修改资料，包括个人资料和密码 updateUserInfoEnable:0 不测试，1 测试
     'updateUserInfoEnable':
-    1,
+    0,
     'userName':
     'TestProduct-产线工程师',
     'qq':
@@ -799,7 +799,7 @@ USER_MOD_PE = {
 
     # 测试team功能 teamEnable:0 不测试，1测试
     'teamEnable':
-    1,
+    0,
     'teamName':
     'Temp test team',
     'teamDes':
@@ -844,7 +844,7 @@ USER_PRO_PJ = {
     'proLisEnable': 1,
 
     # 订单列表 orderListEnable:0 不测试，1测试
-    'orderListEnable': 1,
+    'orderListEnable': 0,
 
     # 添加样品 createSampleEnable:0 不测试，1 测试
     'createSampleEnable': 1,
@@ -902,7 +902,7 @@ USER_MOD_PJ = {
 
     # 订单列表 orderListEnable:0 不测试，1测试
     'orderListEnable':
-    1,
+    0,
 
     # 添加样品 createSampleEnable:0 不测试，1 测试
     'createSampleEnable':
@@ -927,4 +927,3 @@ teamUsers = (
     USER_PRO_PJ['NAME'],
     USER_MOD_PJ['NAME'],
 )
-

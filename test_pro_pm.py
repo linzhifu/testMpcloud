@@ -55,24 +55,6 @@ def goToElement(element, driver):
     sleep(time)
 
 
-# 页面加载
-def pageFinish(driver):
-    # 加载时间最大为10s
-    i = 10
-    STR_READY_STATE = ''
-    while STR_READY_STATE != 'complete':
-        if i:
-            sleep(time)
-            STR_READY_STATE = driver.execute_script(
-                'return document.readyState')
-        else:
-            raise Exception('页面加载失败')
-
-
-def updatePro(wait):
-    pass
-
-
 # 登录
 def login(user, wait):
     # 点击密码登录
@@ -82,6 +64,7 @@ def login(user, wait):
         message='找不到 登录-Tab项(密码登录)')
     logging.debug('登录-Tab项(密码登录)：' + loginTabView.text)
     loginTabView.click()
+    sleep(time)
 
     # 输入email
     inputEmail = wait.until(
@@ -109,6 +92,7 @@ def login(user, wait):
     # send_keys(Keys.ENTER)代替click(),避免无界面模式点击不了
     try:
         loginBtn.click()
+        sleep(time)
     except Exception:
         loginBtn.send_keys(Keys.ENTER)
 
@@ -165,6 +149,7 @@ def updateUserInfo(user, wait):
         message='找不到 修改资料按键')
     logging.debug('个人资料-修改资料：' + setInfoBtn.text)
     setInfoBtn.send_keys(Keys.ENTER)
+    sleep(time)
 
 
 # 还原用户名，方便后续测试
@@ -198,8 +183,6 @@ def checkUserInfo(user, wait):
     myTeamBtn.send_keys(Keys.ENTER)
     sleep(time)
 
-    pageFinish(driver)
-
     # 核对team
     getTeams = wait.until(
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'tbody tr')),
@@ -216,8 +199,6 @@ def checkUserInfo(user, wait):
     goTop(driver)
     backBtn.send_keys(Keys.ENTER)
     sleep(time)
-
-    pageFinish(driver)
 
     # 用户名
     inputName = wait.until(
@@ -319,6 +300,7 @@ def updatePassword(user, wait):
         message='找不到 设置密码-确定按键')
     logging.debug('设置密码-确定：' + checkBtn.text)
     checkBtn.send_keys(Keys.ENTER)
+    sleep(time)
     sleep(time)
 
     # 标记密码已经修改过
@@ -831,18 +813,9 @@ def addProRole(user, wait, driver):
                     sleep(time)
                     try:
                         addUserBtn.click()
+                        sleep(time)
                     except Exception:
                         addUserBtn.send_keys(Keys.ENTER)
-
-                    # 刷新用户列表
-                    sleep(time + 3)
-                    isFinish = wait.until(
-                        EC.text_to_be_present_in_element(
-                            (By.CSS_SELECTOR, '.user-finish'), '已加载'),
-                        message='用户刷新加载失败')
-
-                    if not isFinish:
-                        raise Exception('用户刷新加载失败')
 
                     sleep(time)
 
@@ -895,20 +868,13 @@ def addProRole(user, wait, driver):
 
     # 刷新用户列表
     sleep(time)
-    isFinish = wait.until(
-        EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.user-finish'),
-                                         '已加载'),
-        message='用户刷新加载失败')
-
-    if not isFinish:
-        raise Exception('用户刷新加载失败')
 
 
 # 添加角色
 def addRole(user, wait, driver):
     # 点击用户列表按钮
     userListBtn = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-0')),
         message='找不到 用户列表tab按键')
     logging.debug('产品型号-用户列表：' + userListBtn.text)
     try:
@@ -1082,7 +1048,6 @@ def addRole(user, wait, driver):
 
                 # 刷新用户列表
                 sleep(time + 1)
-                userFinish(wait)
 
                 row += 1
                 # 获取列表显示是否正确
@@ -1121,7 +1086,6 @@ def addRole(user, wait, driver):
 
                     # 刷新用户列表
                     sleep(time)
-                    userFinish(wait)
 
                 break
 
@@ -1171,9 +1135,6 @@ def modifyProInfo(user, wait):
 
 
 def searchPro(user, wait):
-    # 刷新，等待加载完产品列表
-    pageFinish(driver)
-
     # 获取所有产品
     products = wait.until(
         EC.visibility_of_any_elements_located((By.CSS_SELECTOR,
@@ -1223,6 +1184,7 @@ def searchPro(user, wait):
                           modifyProBtn.get_attribute('innerText'))
             try:
                 modifyProBtn.click()
+                sleep(time)
             except Exception:
                 modifyProBtn.send_keys(Keys.ENTER)
             sleep(time)
@@ -1245,6 +1207,7 @@ def searchPro(user, wait):
     logging.debug('产品管理-产品列表：' + searchBtn.text)
     try:
         searchBtn.click()
+        sleep(time)
     except Exception:
         searchBtn.send_keys(Keys.ENTER)
     sleep(time)
@@ -1268,6 +1231,7 @@ def searchPro(user, wait):
                           modifyProBtn.get_attribute('innerText'))
             try:
                 modifyProBtn.click()
+                sleep(time)
             except Exception:
                 modifyProBtn.send_keys(Keys.ENTER)
             sleep(time)
@@ -1281,6 +1245,7 @@ def searchPro(user, wait):
     logging.debug('产品管理-产品列表：' + allProBtn.text)
     try:
         allProBtn.click()
+        sleep(time)
     except Exception:
         allProBtn.send_keys(Keys.ENTER)
     sleep(time)
@@ -1329,12 +1294,10 @@ def searchPro(user, wait):
     logging.debug('产品管理-产品列表：' + searchTestProBtn.get_attribute('innerText'))
     try:
         searchTestProBtn.click()
+        sleep(time)
     except Exception:
         searchTestProBtn.send_keys(Keys.ENTER)
     sleep(time)
-
-    # 刷新，等待加载完产品类型列表
-    updatePro(wait)
 
     # 获取所有产品类型
     modules = wait.until(
@@ -1390,12 +1353,10 @@ def searchPro(user, wait):
     logging.debug('产品列表-查看：' + searchBtn.text)
     try:
         searchBtn.click()
+        sleep(time)
     except Exception:
         searchBtn.send_keys(Keys.ENTER)
     sleep(time)
-
-    # 刷新，等待加载完产品类型列表
-    updatePro(wait)
 
     modules = wait.until(
         EC.visibility_of_any_elements_located((By.CSS_SELECTOR,
@@ -1418,8 +1379,6 @@ def searchPro(user, wait):
     sleep(time)
 
     sleep(time)
-    # 刷新，等待加载完产品类型列表
-    updatePro(wait)
 
     modules = wait.until(
         EC.visibility_of_any_elements_located((By.CSS_SELECTOR,
@@ -1481,25 +1440,9 @@ def test_addProMod(user, wait):
     logging.debug('产品列表-查看：' + addProModBtn.text)
     try:
         addProModBtn.click()
+        sleep(time)
     except Exception:
         addProModBtn.send_keys(Keys.ENTER)
-    sleep(time)
-
-    sleep(time)
-    # 刷新，等待加载完产品类型列表
-    updatePro(wait)
-
-
-# 用户刷新加载
-def userFinish(wait):
-    isFinish = wait.until(
-        EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.user-finish'),
-                                         '用户已加载'),
-        message='用户刷新加载失败')
-
-    if not isFinish:
-        raise Exception('用户刷新加载失败')
-
     sleep(time)
 
 
@@ -1533,13 +1476,10 @@ def modifyMod(user, wait):
     logging.debug('产品列表-查看：' + confirmBtn.text)
     try:
         confirmBtn.click()
+        sleep(time)
     except Exception:
         confirmBtn.send_keys(Keys.ENTER)
     sleep(time)
-
-    sleep(time)
-    # 刷新，等待加载完产品类型列表
-    updatePro(wait)
 
 
 # 测试修改
@@ -1565,12 +1505,13 @@ def test_modifyProMod(user, wait, driver):
             modifyModBtn = wait.until(
                 EC.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    'tbody tr:nth-of-type(%d) td:nth-of-type(6) button:nth-of-type(3)'
+                    'tbody tr:nth-of-type(%d) td:nth-of-type(6) button:nth-of-type(2)'
                     % (i + 1))),
                 message='找不到 修改产品类型按键')
             logging.debug('产品列表-查看：' + modifyModBtn.text)
             try:
                 modifyModBtn.click()
+                sleep(time)
             except Exception:
                 modifyModBtn.send_keys(Keys.ENTER)
             sleep(time)
@@ -1584,12 +1525,13 @@ def test_modifyProMod(user, wait, driver):
             modifyModBtn = wait.until(
                 EC.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    'tbody tr:nth-of-type(%d) td:nth-of-type(6) button:nth-of-type(3)'
+                    'tbody tr:nth-of-type(%d) td:nth-of-type(6) button:nth-of-type(2)'
                     % (i + 1))),
                 message='找不到 修改产品类型按键')
             logging.debug('产品列表-查看：' + modifyModBtn.text)
             try:
                 modifyModBtn.click()
+                sleep(time)
             except Exception:
                 modifyModBtn.send_keys(Keys.ENTER)
             sleep(time)
@@ -1601,12 +1543,13 @@ def test_modifyProMod(user, wait, driver):
             addRoleModBtn = wait.until(
                 EC.element_to_be_clickable((
                     By.CSS_SELECTOR,
-                    'tbody tr:nth-of-type(%d) td:nth-of-type(6) button:nth-of-type(2)'
+                    'tbody tr:nth-of-type(%d) td:nth-of-type(6) button:nth-of-type(1)'
                     % (i + 1))),
                 message='找不到 查看产品类型按键')
             logging.debug('产品列表-查看：' + addRoleModBtn.text)
             try:
                 addRoleModBtn.click()
+                sleep(time)
             except Exception:
                 addRoleModBtn.send_keys(Keys.ENTER)
             sleep(time)
@@ -1625,10 +1568,6 @@ def test_modifyProMod(user, wait, driver):
             except Exception:
                 backBtn.send_keys(Keys.ENTER)
             sleep(time)
-
-            sleep(time)
-            # 刷新，等待加载完产品类型列表
-            pageFinish(driver)
 
 
 # 测试删除
@@ -1664,6 +1603,7 @@ def test_deleteProMod(user, wait):
             logging.debug('产品列表-查看：' + deleteModBtn.text)
             try:
                 deleteModBtn.click()
+                sleep(time)
             except Exception:
                 deleteModBtn.send_keys(Keys.ENTER)
             sleep(time)
@@ -1678,13 +1618,10 @@ def test_deleteProMod(user, wait):
             logging.debug('产品列表-查看：' + confirmBtn.text)
             try:
                 confirmBtn.click()
+                sleep(time)
             except Exception:
                 confirmBtn.send_keys(Keys.ENTER)
             sleep(time)
-
-            sleep(time)
-            # 刷新，等待加载完产品类型列表
-            updatePro(wait)
 
             row -= 1
 
@@ -1748,7 +1685,7 @@ def test_proModFuc(user, wait, driver):
     test_modifyProMod(user, wait, driver)
 
     # 测试删除
-    test_deleteProMod(user, wait)
+    # test_deleteProMod(user, wait)
 
     # 测试产品添加删除角色(未完成)
     addProRole(user, wait, driver)
@@ -1763,19 +1700,20 @@ def relatedMptool(wait):
     logging.debug('关联量产工具：' + addSoftBtn.text)
     try:
         addSoftBtn.click()
+        sleep(time)
     except Exception:
         addSoftBtn.send_keys(Keys.ENTER)
-    sleep(time)
     sleep(time)
 
     # 软件类型
     inputSoftMod = wait.until(
         EC.visibility_of_element_located(
             (By.CSS_SELECTOR,
-             '.el-dialog__body .el-form-item:nth-of-type(1) input')),
+             '.el-dialog__body .relate-item:nth-of-type(2) input')),
         message='找不到 软件类型输入栏')
     try:
         inputSoftMod.click()
+        sleep(time)
     except Exception:
         inputSoftMod.send_keys(Keys.ENTER)
 
@@ -1797,10 +1735,11 @@ def relatedMptool(wait):
     inputSoft = wait.until(
         EC.visibility_of_element_located(
             (By.CSS_SELECTOR,
-             '.el-dialog__body .el-form-item:nth-of-type(2) input')),
+             '.el-dialog__body .relate-item:nth-of-type(3) input')),
         message='找不到 软件输入栏')
     try:
         inputSoft.click()
+        sleep(time)
     except Exception:
         inputSoft.send_keys(Keys.ENTER)
 
@@ -1820,11 +1759,12 @@ def relatedMptool(wait):
     # 确定
     confirmBtn = wait.until(
         EC.element_to_be_clickable(
-            (By.CSS_SELECTOR, '.el-dialog__footer button:nth-of-type(2)')),
+            (By.CSS_SELECTOR, '.el-dialog__body .relate-item:nth-of-type(4) button:nth-of-type(2)')),
         message='找不到 确定关联按键')
     logging.debug('关联量产工具-关联软件：' + confirmBtn.text)
     try:
         confirmBtn.click()
+        sleep(time)
     except Exception:
         confirmBtn.send_keys(Keys.ENTER)
 
@@ -1848,6 +1788,7 @@ def cancleRelated(wait):
     logging.debug('关联量产工具-关联软件：' + cancleBtn.text)
     try:
         cancleBtn.click()
+        sleep(time)
     except Exception:
         cancleBtn.send_keys(Keys.ENTER)
 
@@ -1858,6 +1799,7 @@ def cancleRelated(wait):
     logging.debug('关联量产工具-关联软件：' + okBtn.text)
     try:
         okBtn.click()
+        sleep(time)
     except Exception:
         okBtn.send_keys(Keys.ENTER)
 
@@ -1882,6 +1824,7 @@ def addOrderTool(user, wait):
     logging.debug('订单管理-量产工具：' + relatedBtn.text)
     try:
         relatedBtn.click()
+        sleep(time)
     except Exception:
         relatedBtn.send_keys(Keys.ENTER)
 
@@ -1911,6 +1854,7 @@ def searchByOrderNum(wait):
     logging.debug('订单列表-查询：' + ordNumSearchBtn.text)
     try:
         ordNumSearchBtn.click()
+        sleep(time)
     except Exception:
         ordNumSearchBtn.send_keys(Keys.ENTER)
 
@@ -1935,6 +1879,7 @@ def searchByProMod(wait):
         message='找不到 产品列表下拉按键')
     try:
         prolistBtn.click()
+        sleep(time)
     except Exception:
         prolistBtn.send_keys(Keys.ENTER)
 
@@ -1959,6 +1904,7 @@ def searchByProMod(wait):
         message='找不到 产品类型列表下拉按键')
     try:
         modlistBtn.click()
+        sleep(time)
     except Exception:
         modlistBtn.send_keys(Keys.ENTER)
 
@@ -1984,6 +1930,7 @@ def searchByProMod(wait):
     logging.debug('订单列表-查询：' + proModSearchBtn.text)
     try:
         proModSearchBtn.click()
+        sleep(time)
     except Exception:
         proModSearchBtn.send_keys(Keys.ENTER)
 
@@ -2004,6 +1951,7 @@ def searchAllOrder(wait):
     logging.debug('订单列表-查询：' + allOrderBtn.text)
     try:
         allOrderBtn.click()
+        sleep(time)
     except Exception:
         allOrderBtn.send_keys(Keys.ENTER)
 
@@ -2049,6 +1997,15 @@ def searchOrder(user, wait):
     searchAllOrder(wait)
 
 
+# 点击退出
+def logout(user, wait, driver):
+    logoutBtn = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '.loginout')),
+        message='找不到退出按键')
+    logoutBtn.click()
+    sleep(time)
+
+
 # 用户资料
 def userInfo(user, wait, driver):
     if user['updateUserInfoEnable']:
@@ -2064,7 +2021,7 @@ def userInfo(user, wait, driver):
         # 修改密码
         logging.info('修改密码')
         updatePassword(user, wait)
-        driver.get(config.URL)
+        logout(user, wait, driver)
         login(user, wait)
         checkUserInfo(user, wait)
         updatePassword(user, wait)
@@ -2084,11 +2041,9 @@ def userInfo(user, wait, driver):
         logging.debug('个人中心-我的资料：' + myTeamBtn.text)
         try:
             myTeamBtn.click()
+            sleep(time)
         except Exception:
             myTeamBtn.send_keys(Keys.ENTER)
-
-        # 等待team列表刷新
-        pageFinish(driver)
 
         # 添加Team
         logging.info('添加Team')
@@ -2118,7 +2073,6 @@ def productManager(user, wait, driver):
     logging.debug('产品管理：' + proManagerBtn.text)
     proManagerBtn.click()
     sleep(time)
-    pageFinish(driver)
 
 
 # 新增产品
@@ -2132,6 +2086,7 @@ def addProduct(user, wait, driver):
             message='找不到 新增项目')
         logging.debug('产品管理-新增产品：' + addNewProModBtn.text)
         addNewProModBtn.click()
+        sleep(time)
 
         logging.info('添加产品型号')
         addMod(user, wait, driver)
@@ -2156,7 +2111,6 @@ def proList(user, wait, driver):
         logging.debug('产品管理-产品列表：' + proLisBtn.text)
         proLisBtn.click()
         sleep(time)
-        pageFinish(driver)
 
         # 查询功能
         logging.info('查询产品列表')
@@ -2181,6 +2135,7 @@ def orderManager(user, wait, driver):
         message='找不到 订单管理')
     logging.debug('订单管理：' + orderManagerBtn.text)
     orderManagerBtn.click()
+    sleep(time)
 
 
 # 关联量产工具
@@ -2194,7 +2149,6 @@ def orderTools(user, wait, driver):
         logging.debug('订单管理-量产工具：' + orderToolsBtn.text)
         orderToolsBtn.click()
         sleep(time)
-        pageFinish(driver)
 
         logging.info('订单关联量产工具')
         addOrderTool(user, wait)
@@ -2212,6 +2166,7 @@ def orderList(user, wait, driver):
             message='找不到 订单列表按键')
         logging.debug('订单管理-量产工具：' + orderListsBtn.text)
         orderListsBtn.click()
+        sleep(time)
 
         logging.info('查询订单')
         searchOrder(user, wait)
@@ -2365,10 +2320,11 @@ if __name__ == '__main__':
             # 指定浏览器分辨率
             opt.add_argument('window-size=1920x3000')
             opt.set_headless()
-        # driver = webdriver.Chrome(options=opt)
-        driver = webdriver.Ie()
+        driver = webdriver.Chrome(options=opt)
+        # driver = webdriver.Ie()
         OK = main(driver)
+        j = j - 1
         if OK:
-            j = j - 1
+            # j = j - 1
             i += 1
             print(i)

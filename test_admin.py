@@ -132,24 +132,10 @@ def addUserToTeam(wait, driver):
 
                 # 等待用户列表刷新
                 sleep(time)
-                pageFinish(wait)
                 break
 
             if user == users[len(users) - 1]:
                 raise Exception('找不到用户：' + teamUser)
-
-
-# 列表刷新
-def pageFinish(wait):
-    pageFinish = wait.until(
-        EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.page-finish'),
-                                         '已加载'),
-        message='找不到 列表刷新标志')
-
-    if not pageFinish:
-        raise Exception('列表加载失败')
-
-    sleep(config.timeout)
 
 
 # 创建TEAM
@@ -213,7 +199,6 @@ def createTeam(wait, driver):
 
         # 需要延迟，防止页面挡住，刷新列表
         sleep(time)
-        pageFinish(wait)
 
     # 点击查看
     teamViewBtn = wait.until(
@@ -226,7 +211,6 @@ def createTeam(wait, driver):
 
     # 刷新用户列表
     sleep(time)
-    pageFinish(wait)
 
 
 def adminManager(wait):
@@ -256,7 +240,6 @@ def teamManage(user, wait, driver):
 
         # 等待所有team列表，否则team列表可能获取为空
         sleep(time)
-        pageFinish(wait)
 
         # 创建TEAM:
         logging.info('创建TEAM：TestTeam')
@@ -402,32 +385,6 @@ def addProMod(wait):
 '''
 
 
-# 型号列表加载
-def proFinish(wait):
-    proFinish = wait.until(
-        EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.pro-finish'),
-                                         '已加载'),
-        message='找不到 型号列表刷新标志')
-
-    if not proFinish:
-        raise Exception('型号列表加载失败')
-
-    sleep(config.timeout)
-
-
-# 用户列表加载
-def userFinish(wait):
-    userFinish = wait.until(
-        EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.user-finish'),
-                                         '已加载'),
-        message='找不到 用户列表刷新标志')
-
-    if not userFinish:
-        raise Exception('用户列表加载失败')
-
-    sleep(config.timeout)
-
-
 # 判断类型是否存在
 def isExistMod(wait, modName):
     pros = wait.until(
@@ -452,7 +409,6 @@ def newModule(wait, proName, modName, modDes):
 
     # 等待产品列表加载完成
     sleep(time)
-    pageFinish(wait)
 
     # 获取产品列表产品名
     proNames = wait.until(
@@ -475,9 +431,6 @@ def newModule(wait, proName, modName, modDes):
 
     # 等待列表加载
     sleep(time)
-
-    # BUG 当列表为空时，没办法通过‘已加载’字符来判断页面刷新完成
-    # proFinish(wait)
 
     # 判断是否已存在这个类型
     if isExistMod(wait, modName) is False:
@@ -503,8 +456,6 @@ def newModule(wait, proName, modName, modDes):
         addProModBtn.click()
 
         sleep(config.timeout)
-        # 刷新，等待加载完产品类型列表
-        proFinish(wait)
 
 
 # 添加产品角色
@@ -520,7 +471,6 @@ def addProRole(wait, driver, proName):
 
     # 等待产品列表加载完成
     sleep(time)
-    pageFinish(wait)
 
     # 获取产品列表产品名
     proNames = wait.until(
@@ -543,7 +493,6 @@ def addProRole(wait, driver, proName):
 
     # 等待列表加载
     sleep(time)
-    proFinish(wait)
 
     # 添加角色
     addRole(wait, driver, '产品-')
@@ -562,7 +511,6 @@ def addModRole(wait, driver, proName):
 
     # 等待产品列表加载完成
     sleep(time)
-    pageFinish(wait)
 
     # 获取产品列表产品名
     proNames = wait.until(
@@ -585,7 +533,6 @@ def addModRole(wait, driver, proName):
 
     # 等待列表加载
     sleep(time)
-    proFinish(wait)
 
     # 获取所有型号
     mods = wait.until(
@@ -614,17 +561,17 @@ def addModRole(wait, driver, proName):
 
         # 等待列表刷新
         sleep(time)
-        proFinish(wait)
 
 
 # 新增角色-用户
 def addRole(wait, driver, str):
-    # 点击用户列表按钮
-    userListBtn = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
-        message='找不到 产品成员按钮')
-    logging.debug('产品型号-产品成员：' + userListBtn.text)
-    userListBtn.click()
+    if str == '产品-':
+        # 点击用户列表按钮
+        userListBtn = wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
+            message='找不到 产品成员按钮')
+        logging.debug('产品型号-产品成员：' + userListBtn.text)
+        userListBtn.click()
 
     # 添加角色按钮
     addRoleBtn = wait.until(
@@ -741,7 +688,6 @@ def addRole(wait, driver, str):
 
                 # 刷新列表
                 sleep(time + 1)
-                userFinish(wait)
                 break
 
 
@@ -990,7 +936,6 @@ def upSoftware(wait, user, product, module):
 
     # 等待列表加载完成
     sleep(time)
-    pageFinish(wait)
 
 
 # 订单管理
@@ -1011,22 +956,22 @@ def newOrder(wait, user):
     if user['createOrderEnable']:
         # 创建订单
         logging.info('创建订单')
-        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_1'],
-                    config.ORDER_1, config.USER_PRO_PE['NAME'])
-        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_1'],
-                    config.ORDER_2, config.USER_MOD_PE['NAME'])
-        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_2'],
-                    config.ORDER_3, config.USER_PRO_PE['NAME'])
-        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_2'],
-                    config.ORDER_4, config.USER_MOD_PE['NAME'])
-        createOrder(wait, proMod['PRONAME_2'], proMod['MODNAME_1'],
-                    config.ORDER_5, config.USER_PRO_PE['NAME'])
-        createOrder(wait, proMod['PRONAME_2'], proMod['MODNAME_1'],
-                    config.ORDER_6, config.USER_MOD_PE['NAME'])
         createOrder(wait, proMod['PRONAME_2'], proMod['MODNAME_2'],
-                    config.ORDER_7, config.USER_PRO_PE['NAME'])
+                    config.ORDER_8, config.USER_PRO_PE['NAME'])
         createOrder(wait, proMod['PRONAME_2'], proMod['MODNAME_2'],
-                    config.ORDER_8, config.USER_MOD_PE['NAME'])
+                    config.ORDER_7, config.USER_MOD_PE['NAME'])
+        createOrder(wait, proMod['PRONAME_2'], proMod['MODNAME_1'],
+                    config.ORDER_6, config.USER_PRO_PE['NAME'])
+        createOrder(wait, proMod['PRONAME_2'], proMod['MODNAME_1'],
+                    config.ORDER_5, config.USER_MOD_PE['NAME'])
+        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_2'],
+                    config.ORDER_4, config.USER_PRO_PE['NAME'])
+        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_2'],
+                    config.ORDER_3, config.USER_MOD_PE['NAME'])
+        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_1'],
+                    config.ORDER_2, config.USER_PRO_PE['NAME'])
+        createOrder(wait, proMod['PRONAME_1'], proMod['MODNAME_1'],
+                    config.ORDER_1, config.USER_MOD_PE['NAME'])
         logging.info('创建订单成功')
 
 
@@ -1042,8 +987,6 @@ def createOrder(wait, product, module, order, pe):
     logging.debug('订单管理：' + orderList.text)
     orderList.click()
     sleep(time)
-
-    pageFinish(wait)
 
     # 获取订单号
     orders = wait.until(
@@ -1287,7 +1230,6 @@ def newSampe(wait, user, sample):
 
     # 检查样品编码是否已经存在
     try:
-        pageFinish(wait)
         numbers = wait.until(
             EC.visibility_of_any_elements_located(
                 (By.CSS_SELECTOR, 'tbody tr td:nth-child(1)')),
@@ -1352,7 +1294,6 @@ def newNgSampe(wait, user, sample):
 
     # 检查样品编码是否已经存在
     try:
-        pageFinish(wait)
         numbers = wait.until(
             EC.visibility_of_any_elements_located(
                 (By.CSS_SELECTOR, 'tbody tr td:nth-child(1)')),
@@ -1850,4 +1791,5 @@ def main(driver, user=config.USER_ADMIN):
 if __name__ == '__main__':
     driver = webdriver.Chrome()
     # driver = webdriver.Ie()
+    # driver = webdriver.Firefox()
     main(driver)

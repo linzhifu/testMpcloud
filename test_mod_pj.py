@@ -286,6 +286,7 @@ def updatePassword(user, wait):
         message='找不到 设置密码-确定按键')
     logging.debug('设置密码-确定：' + checkBtn.text)
     checkBtn.click()
+    sleep(time)
 
     isNewPsw = not isNewPsw
 
@@ -1312,61 +1313,53 @@ def searchPro(user, wait, driver):
 
     # 检查订单显示
     # ORDER1
-    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
-        raise Exception(config.ORDER_1['NUM'] + ' 订单号显示错误：' +
-                        getTeamInfo(wait, 1, 2))
-    if getTeamInfo(wait, 1, 3) != config.ORDER_1['ONLINE']:
-        raise Exception(config.ORDER_1['ONLINE'] + ' 在线数量显示错误：' +
-                        getTeamInfo(wait, 1, 3))
-    if getTeamInfo(wait, 1, 4) != config.ORDER_1['OFFLINE']:
-        raise Exception(config.ORDER_1['OFFLINE'] + ' 离线数量显示错误：' +
-                        getTeamInfo(wait, 1, 4))
-    if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
-        raise Exception(config.ORDER_1['FACTORY'] + ' 工厂显示错误：' +
-                        getTeamInfo(wait, 1, 5))
-    if getTeamInfo(wait, 1, 6) != config.authTime:
-        raise Exception(config.authTime + ' 有效时间显示错误：' +
-                        getTeamInfo(wait, 1, 6))
-    # if getTeamInfo(wait, 1, 7) != config.USER_PRO_PE['NAME']:
-    #     raise Exception(config.USER_PRO_PE['NAME'] + ' 创建人显示错误：' +
-    #                     getTeamInfo(wait, 1, 7))
+    # if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+    #     raise Exception(config.ORDER_1['NUM'] + ' 订单号显示错误：' +
+    #                     getTeamInfo(wait, 1, 2))
+    # if getTeamInfo(wait, 1, 3) != config.ORDER_1['ONLINE']:
+    #     raise Exception(config.ORDER_1['ONLINE'] + ' 在线数量显示错误：' +
+    #                     getTeamInfo(wait, 1, 3))
+    # if getTeamInfo(wait, 1, 4) != config.ORDER_1['OFFLINE']:
+    #     raise Exception(config.ORDER_1['OFFLINE'] + ' 离线数量显示错误：' +
+    #                     getTeamInfo(wait, 1, 4))
+    # if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
+    #     raise Exception(config.ORDER_1['FACTORY'] + ' 工厂显示错误：' +
+    #                     getTeamInfo(wait, 1, 5))
+    # if getTeamInfo(wait, 1, 6) != config.authTime:
+    #     raise Exception(config.authTime + ' 有效时间显示错误：' +
+    #                     getTeamInfo(wait, 1, 6))
+    # # if getTeamInfo(wait, 1, 7) != config.USER_PRO_PE['NAME']:
+    # #     raise Exception(config.USER_PRO_PE['NAME'] + ' 创建人显示错误：' +
+    # #                     getTeamInfo(wait, 1, 7))
 
-    # ORDER2
-    if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
-        raise Exception(config.ORDER_2['NUM'] + ' 订单号显示错误：' +
-                        getTeamInfo(wait, 2, 2))
-    if getTeamInfo(wait, 2, 3) != config.ORDER_2['ONLINE']:
-        raise Exception(config.ORDER_2['ONLINE'] + ' 在线数量显示错误：' +
-                        getTeamInfo(wait, 2, 3))
-    if getTeamInfo(wait, 2, 4) != config.ORDER_2['OFFLINE']:
-        raise Exception(config.ORDER_2['OFFLINE'] + ' 离线数量显示错误：' +
-                        getTeamInfo(wait, 2, 4))
-    if getTeamInfo(wait, 2, 5) != config.ORDER_2['FACTORY']:
-        raise Exception(config.ORDER_2['FACTORY'] + ' 工厂显示错误：' +
-                        getTeamInfo(wait, 2, 5))
-    if getTeamInfo(wait, 2, 6) != config.authTime:
-        raise Exception(config.authTime + '有效时间显示错误：' +
-                        getTeamInfo(wait, 2, 6))
+    # # ORDER2
+    # if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
+    #     raise Exception(config.ORDER_2['NUM'] + ' 订单号显示错误：' +
+    #                     getTeamInfo(wait, 2, 2))
+    # if getTeamInfo(wait, 2, 3) != config.ORDER_2['ONLINE']:
+    #     raise Exception(config.ORDER_2['ONLINE'] + ' 在线数量显示错误：' +
+    #                     getTeamInfo(wait, 2, 3))
+    # if getTeamInfo(wait, 2, 4) != config.ORDER_2['OFFLINE']:
+    #     raise Exception(config.ORDER_2['OFFLINE'] + ' 离线数量显示错误：' +
+    #                     getTeamInfo(wait, 2, 4))
+    # if getTeamInfo(wait, 2, 5) != config.ORDER_2['FACTORY']:
+    #     raise Exception(config.ORDER_2['FACTORY'] + ' 工厂显示错误：' +
+    #                     getTeamInfo(wait, 2, 5))
+    # if getTeamInfo(wait, 2, 6) != config.authTime:
+    #     raise Exception(config.authTime + '有效时间显示错误：' +
+    #                     getTeamInfo(wait, 2, 6))
     # if getTeamInfo(wait, 2, 7) != config.USER_MOD_PE['NAME']:
     #     raise Exception(config.USER_MOD_PE['NAME'] + ' 创建人显示错误：' +
     #                     getTeamInfo(wait, 2, 7))
 
-    # 点击用户列表按钮
-    userListBtn = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
-        message='找不到 用户列表tab按键')
-    logging.debug('产品型号-用户列表：' + userListBtn.text)
-    userListBtn.click()
-    sleep(time)
-
     # 查看产品成员是否为空
     # 点击用户列表按钮
-    userListBtn = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
-        message='找不到 用户列表tab按键')
-    logging.debug('产品型号-用户列表：' + userListBtn.text)
-    userListBtn.click()
-    sleep(time)
+    # userListBtn = wait.until(
+    #     EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-0')),
+    #     message='找不到 用户列表tab按键')
+    # logging.debug('产品型号-用户列表：' + userListBtn.text)
+    # userListBtn.click()
+    # sleep(time)
 
     # 返回上一级
     backBtn = wait.until(
@@ -1982,6 +1975,15 @@ def searchOrder(user, wait):
     searchAllOrder(wait)
 
 
+# 点击退出
+def logout(user, wait, driver):
+    logoutBtn = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '.loginout')),
+        message='找不到退出按键')
+    logoutBtn.click()
+    sleep(time)
+
+
 # 用户资料
 def userInfo(user, wait, driver):
     if user['updateUserInfoEnable']:
@@ -1997,7 +1999,7 @@ def userInfo(user, wait, driver):
         # 修改密码
         logging.info('修改密码')
         updatePassword(user, wait)
-        driver.get(config.URL)
+        logout(user, wait, driver)
         login(user, wait)
         checkUserInfo(user, wait)
         updatePassword(user, wait)
@@ -3254,9 +3256,9 @@ if __name__ == '__main__':
         driver = webdriver.Chrome(options=opt)
         OK = main(driver)
         # 只测试J次
-        # j = j - 1
+        j = j - 1
         if OK:
             # 必须J次pass
-            j = j - 1
+            # j = j - 1
             i += 1
             print(i)

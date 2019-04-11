@@ -635,12 +635,7 @@ def testTeamFunction(user, wait, driver):
 
 
 # 核对项目成员
-def check_user(wait):
-    users = wait.until(
-        EC.presence_of_all_elements_located(
-            (By.CSS_SELECTOR,
-             '[aria-labelledby=tab-1] tbody tr td:nth-child(2)')),
-        message='找不到项目成员')
+def check_user(wait, users):
     if len(users) != 6:
         raise Exception('项目成员数量不对')
     for user in users:
@@ -894,59 +889,64 @@ def searchPro(user, wait, driver):
     if not isCreateDes:
         raise Exception('型号创建失败 项目描述：' + proMod['MODDES_1'])
 
-    # 检查订单显示
-    # ORDER1
-    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
-        raise Exception(config.ORDER_1['NUM'] + ' 订单号显示错误：' +
-                        getTeamInfo(wait, 1, 2))
-    if getTeamInfo(wait, 1, 3) != config.ORDER_1['ONLINE']:
-        raise Exception(config.ORDER_1['ONLINE'] + ' 在线数量显示错误：' +
-                        getTeamInfo(wait, 1, 3))
-    if getTeamInfo(wait, 1, 4) != config.ORDER_1['OFFLINE']:
-        raise Exception(config.ORDER_1['OFFLINE'] + ' 离线数量显示错误：' +
-                        getTeamInfo(wait, 1, 4))
-    if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
-        raise Exception(config.ORDER_1['FACTORY'] + ' 工厂显示错误：' +
-                        getTeamInfo(wait, 1, 5))
-    if getTeamInfo(wait, 1, 6) != config.authTime:
-        raise Exception(config.authTime + ' 有效时间显示错误：' +
-                        getTeamInfo(wait, 1, 6))
-    # if getTeamInfo(wait, 1, 7) != config.USER_PRO_PE['NAME']:
-    #     raise Exception(config.USER_PRO_PE['NAME'] + ' 创建人显示错误：' +
-    #                     getTeamInfo(wait, 1, 7))
+    # # 检查订单显示
+    # # ORDER1
+    # if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+    #     raise Exception(config.ORDER_1['NUM'] + ' 订单号显示错误：' +
+    #                     getTeamInfo(wait, 1, 2))
+    # if getTeamInfo(wait, 1, 3) != config.ORDER_1['ONLINE']:
+    #     raise Exception(config.ORDER_1['ONLINE'] + ' 在线数量显示错误：' +
+    #                     getTeamInfo(wait, 1, 3))
+    # if getTeamInfo(wait, 1, 4) != config.ORDER_1['OFFLINE']:
+    #     raise Exception(config.ORDER_1['OFFLINE'] + ' 离线数量显示错误：' +
+    #                     getTeamInfo(wait, 1, 4))
+    # if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
+    #     raise Exception(config.ORDER_1['FACTORY'] + ' 工厂显示错误：' +
+    #                     getTeamInfo(wait, 1, 5))
+    # if getTeamInfo(wait, 1, 6) != config.authTime:
+    #     raise Exception(config.authTime + ' 有效时间显示错误：' +
+    #                     getTeamInfo(wait, 1, 6))
+    # # if getTeamInfo(wait, 1, 7) != config.USER_PRO_PE['NAME']:
+    # #     raise Exception(config.USER_PRO_PE['NAME'] + ' 创建人显示错误：' +
+    # #                     getTeamInfo(wait, 1, 7))
 
-    # ORDER2
-    if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
-        raise Exception(config.ORDER_2['NUM'] + ' 订单号显示错误：' +
-                        getTeamInfo(wait, 2, 2))
-    if getTeamInfo(wait, 2, 3) != config.ORDER_2['ONLINE']:
-        raise Exception(config.ORDER_2['ONLINE'] + ' 在线数量显示错误：' +
-                        getTeamInfo(wait, 2, 3))
-    if getTeamInfo(wait, 2, 4) != config.ORDER_2['OFFLINE']:
-        raise Exception(config.ORDER_2['OFFLINE'] + ' 离线数量显示错误：' +
-                        getTeamInfo(wait, 2, 4))
-    if getTeamInfo(wait, 2, 5) != config.ORDER_2['FACTORY']:
-        raise Exception(config.ORDER_2['FACTORY'] + ' 工厂显示错误：' +
-                        getTeamInfo(wait, 2, 5))
-    if getTeamInfo(wait, 2, 6) != config.authTime:
-        raise Exception(config.authTime + '有效时间显示错误：' +
-                        getTeamInfo(wait, 2, 6))
-    # if getTeamInfo(wait, 2, 7) != config.USER_MOD_PE['NAME']:
-    #     raise Exception(config.USER_MOD_PE['NAME'] + ' 创建人显示错误：' +
-    #                     getTeamInfo(wait, 2, 7))
+    # # ORDER2
+    # if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
+    #     raise Exception(config.ORDER_2['NUM'] + ' 订单号显示错误：' +
+    #                     getTeamInfo(wait, 2, 2))
+    # if getTeamInfo(wait, 2, 3) != config.ORDER_2['ONLINE']:
+    #     raise Exception(config.ORDER_2['ONLINE'] + ' 在线数量显示错误：' +
+    #                     getTeamInfo(wait, 2, 3))
+    # if getTeamInfo(wait, 2, 4) != config.ORDER_2['OFFLINE']:
+    #     raise Exception(config.ORDER_2['OFFLINE'] + ' 离线数量显示错误：' +
+    #                     getTeamInfo(wait, 2, 4))
+    # if getTeamInfo(wait, 2, 5) != config.ORDER_2['FACTORY']:
+    #     raise Exception(config.ORDER_2['FACTORY'] + ' 工厂显示错误：' +
+    #                     getTeamInfo(wait, 2, 5))
+    # if getTeamInfo(wait, 2, 6) != config.authTime:
+    #     raise Exception(config.authTime + '有效时间显示错误：' +
+    #                     getTeamInfo(wait, 2, 6))
+    # # if getTeamInfo(wait, 2, 7) != config.USER_MOD_PE['NAME']:
+    # #     raise Exception(config.USER_MOD_PE['NAME'] + ' 创建人显示错误：' +
+    # #                     getTeamInfo(wait, 2, 7))
 
     # 点击用户列表按钮
-    userListBtn = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
-        message='找不到 用户列表tab按键')
-    logging.debug('产品型号-用户列表：' + userListBtn.text)
-    try:
-        userListBtn.click()
-    except Exception:
-        userListBtn.send_keys(Keys.ENTER)
+    # userListBtn = wait.until(
+    #     EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#tab-1')),
+    #     message='找不到 用户列表tab按键')
+    # logging.debug('产品型号-用户列表：' + userListBtn.text)
+    # try:
+    #     userListBtn.click()
+    # except Exception:
+    #     userListBtn.send_keys(Keys.ENTER)
     sleep(time)
 
-    check_user(wait)
+    users = wait.until(
+        EC.presence_of_all_elements_located(
+            (By.CSS_SELECTOR,
+             '[aria-labelledby=tab-0] tbody tr td:nth-child(2)')),
+        message='找不到项目成员')
+    check_user(wait, users)
 
     # 返回上一级
     backBtn = wait.until(
@@ -970,7 +970,12 @@ def searchPro(user, wait, driver):
         userListBtn.send_keys(Keys.ENTER)
     sleep(time)
 
-    check_user(wait)
+    users = wait.until(
+        EC.presence_of_all_elements_located(
+            (By.CSS_SELECTOR,
+             '[aria-labelledby=tab-1] tbody tr td:nth-child(2)')),
+        message='找不到项目成员')
+    check_user(wait, users)
 
 
 # 按订单号查询
@@ -1002,6 +1007,15 @@ def searchByOrderNum(wait):
         raise Exception(config.authTime + ' 有效时间不对：' + getTeamInfo(wait, 1, 6))
 
 
+# 点击退出
+def logout(user, wait, driver):
+    logoutBtn = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '.loginout')),
+        message='找不到退出按键')
+    logoutBtn.click()
+    sleep(time)
+
+
 # 用户资料
 def userInfo(user, wait, driver):
     # 修改个人资料和修改密码 测试
@@ -1017,7 +1031,9 @@ def userInfo(user, wait, driver):
         # 修改密码
         logging.info('修改密码')
         updatePassword(user, wait)
-        driver.get(config.URL)
+        # driver.get(config.URL)
+        # 点击退出
+        logout(user, wait, driver)
         login(user, wait)
         checkUserInfo(user, wait, driver)
         updatePassword(user, wait)
@@ -1251,7 +1267,7 @@ def deleteOrder(user, wait, driver):
     # 确定删除是否成功
     orders = wait.until(
         EC.visibility_of_any_elements_located((By.CSS_SELECTOR,
-                                               'tbody td:nth-of-type(1)')),
+                                               'tbody td:nth-of-type(2)')),
         message='找不到 订单列表')
     for order in orders:
         if order.text == user['tempOrder']['NUM']:
@@ -1280,9 +1296,9 @@ def orderList(user, wait, driver):
         addAuthor(user, wait, driver, '离线', '1000')
         logging.info('追加授权成功')
 
-        logging.info('删除订单')
-        deleteOrder(user, wait, driver)
-        logging.info('删除订单成功')
+        # logging.info('删除订单')
+        # deleteOrder(user, wait, driver)
+        # logging.info('删除订单成功')
 
 
 # 追加授权
@@ -1688,7 +1704,8 @@ if __name__ == '__main__':
         driver = webdriver.Chrome(options=opt)
         # driver = webdriver.Ie()
         OK = main(driver)
+        j = j - 1
         if OK:
-            j = j - 1
+            # j = j - 1
             i += 1
             print(i)
