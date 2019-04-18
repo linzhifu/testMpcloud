@@ -3271,7 +3271,7 @@ def main(driver, user=config.USER_PRO_RD):
 
 if __name__ == '__main__':
     # 测试测试
-    j = 1
+    j = 2
     # pass计数
     i = 0
     while j:

@@ -1001,7 +1001,7 @@ def searchByOrderNum(wait):
     # 检查查询结果
     if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
         raise Exception(config.ORDER_1['NUM'] + ' 订单号不对：' +
-                        getTeamInfo(wait, 1, 1))
+                        getTeamInfo(wait, 1, 2))
     if getTeamInfo(wait, 1, 5) != config.ORDER_1['FACTORY']:
         raise Exception(config.ORDER_1['FACTORY'] + ' 工厂不对：' +
                         getTeamInfo(wait, 1, 5))
@@ -1127,12 +1127,15 @@ def searchByProMod(wait):
     sleep(time)
 
     # 检查查询结果
-    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+    if getTeamInfo(wait, 1, 2) != '20181111':
+        raise Exception(config.ORDER_1['NUM'] + ' 订单号不对：' +
+                        getTeamInfo(wait, 1, 2))
+    if getTeamInfo(wait, 2, 2) != config.ORDER_1['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 1, 1))
-    if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
+                        getTeamInfo(wait, 2, 2))
+    if getTeamInfo(wait, 3, 2) != config.ORDER_2['NUM']:
         raise Exception(config.ORDER_2['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 2, 1))
+                        getTeamInfo(wait, 3, 2))
 
 
 # 产品列表
@@ -1176,30 +1179,33 @@ def searchAllOrder(wait):
     sleep(time)
 
     # 检查查询结果
-    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+    if getTeamInfo(wait, 1, 2) != '20181111':
+        raise Exception(config.ORDER_1['NUM'] + ' 订单号不对：' +
+                        getTeamInfo(wait, 1, 2))
+    if getTeamInfo(wait, 2, 2) != config.ORDER_1['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 1, 1))
-    if getTeamInfo(wait, 2, 2) != config.ORDER_2['NUM']:
+                        getTeamInfo(wait, 2, 2))
+    if getTeamInfo(wait, 3, 2) != config.ORDER_2['NUM']:
         raise Exception(config.ORDER_2['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 2, 1))
-    if getTeamInfo(wait, 3, 2) != config.ORDER_3['NUM']:
+                        getTeamInfo(wait, 3, 2))
+    if getTeamInfo(wait, 4, 2) != config.ORDER_3['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 3, 1))
-    if getTeamInfo(wait, 4, 2) != config.ORDER_4['NUM']:
+                        getTeamInfo(wait, 4, 2))
+    if getTeamInfo(wait, 5, 2) != config.ORDER_4['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 4, 1))
-    if getTeamInfo(wait, 5, 2) != config.ORDER_5['NUM']:
+                        getTeamInfo(wait, 5, 2))
+    if getTeamInfo(wait, 6, 2) != config.ORDER_5['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 5, 1))
-    if getTeamInfo(wait, 6, 2) != config.ORDER_6['NUM']:
+                        getTeamInfo(wait, 6, 2))
+    if getTeamInfo(wait, 7, 2) != config.ORDER_6['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 6, 1))
-    if getTeamInfo(wait, 7, 2) != config.ORDER_7['NUM']:
+                        getTeamInfo(wait, 7, 2))
+    if getTeamInfo(wait, 8, 2) != config.ORDER_7['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 7, 1))
-    if getTeamInfo(wait, 8, 2) != config.ORDER_8['NUM']:
+                        getTeamInfo(wait, 8, 2))
+    if getTeamInfo(wait, 9, 2) != config.ORDER_8['NUM']:
         raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
-                        getTeamInfo(wait, 8, 1))
+                        getTeamInfo(wait, 9, 2))
 
 
 # 订单查询
@@ -1296,9 +1302,9 @@ def orderList(user, wait, driver):
         addAuthor(user, wait, driver, '离线', '1000')
         logging.info('追加授权成功')
 
-        logging.info('删除订单')
-        deleteOrder(user, wait, driver)
-        logging.info('删除订单成功')
+        # logging.info('删除订单')
+        # deleteOrder(user, wait, driver)
+        # logging.info('删除订单成功')
 
 
 # 追加授权
@@ -1307,8 +1313,8 @@ def addAuthor(user, wait, driver, str, num):
     auhtorBtn = wait.until(
         EC.element_to_be_clickable(
             (By.CSS_SELECTOR,
-             'tbody tr:nth-of-type(9) .download-url:nth-child(4)')),
-        message='找不到 删除按键')
+             'tbody tr:nth-of-type(1) .download-url:nth-child(3)')),
+        message='找不到 追加授权按键')
     goToElement(auhtorBtn, driver)
     logging.debug('订单管理-订单列表：' + auhtorBtn.text)
     goToElement(auhtorBtn, driver)
@@ -1357,17 +1363,18 @@ def addAuthor(user, wait, driver, str, num):
         allNum = wait.until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR,
-                 'tbody tr:nth-child(9) td:nth-child(3) div')),
+                 'tbody tr:nth-child(1) td:nth-child(3) div')),
             message='找不到 在线授权数量')
-        if int(allNum.text) != (int(num) + int(user['tempOrder']['ONLINE'])):
+        print(allNum.text)
+        if allNum.text != '3200 / 3200':
             raise Exception('追加在线授权失败')
     else:
         allNum = wait.until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR,
-                 'tbody tr:nth-child(9) td:nth-child(4) div')),
+                 'tbody tr:nth-child(1) td:nth-child(4) div')),
             message='找不到 离线授权数量')
-        if int(allNum.text) != (int(num) + int(user['tempOrder']['OFFLINE'])):
+        if allNum.text != '1200 / 1200':
             raise Exception('追加离线授权失败')
 
 
@@ -1395,8 +1402,7 @@ def createOrder(wait, product, module, order, pe, user, driver):
     for i in range(len(orders)):
         if order['NUM'] == orders[i].text:
             logging.debug('订单已存在')
-            # 删除订单
-            deleteOrder(user, wait, driver)
+            return
 
     # 点击创建订单
     createOrderBtn = wait.until(
@@ -1464,18 +1470,10 @@ def createOrder(wait, product, module, order, pe, user, driver):
     outLineNum = wait.until(
         EC.visibility_of_element_located((
             By.CSS_SELECTOR,
-            '.order-item:nth-of-type(4) div:nth-of-type(3) .el-input__inner')),
-        message='找不到 离线授权输入栏')
-    outLineNum.send_keys(order['OFFLINE'])
-    logging.debug('创建订单-离线授权数量：' + order['OFFLINE'])
-
-    onLineNum = wait.until(
-        EC.visibility_of_element_located((
-            By.CSS_SELECTOR,
-            '.order-item:nth-of-type(4) div:nth-of-type(2) .el-input__inner')),
-        message='找不到 在线授权输入栏')
-    onLineNum.send_keys(order['ONLINE'])
-    logging.debug('创建订单-在线授权数量：' + order['ONLINE'])
+            '.order-item:nth-of-type(4) div .el-input__inner')),
+        message='找不到 生产数量输入栏')
+    outLineNum.send_keys(1000)
+    logging.debug('创建订单-生产数量：1000')
 
     # 生产工厂
     factoryName = wait.until(

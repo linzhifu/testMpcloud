@@ -734,8 +734,8 @@ def searchByProMod(wait):
     sleep(time)
 
     # 检查查询结果
-    if getTeamInfo(wait, 1, 2) != config.ORDER_2['NUM']:
-        raise Exception(config.ORDER_2['NUM'] + '订单号不对：' +
+    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+        raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
                         getTeamInfo(wait, 1, 2))
 
 
@@ -749,17 +749,17 @@ def searchAllOrder(wait):
     sleep(time)
 
     # 检查查询结果
-    if getTeamInfo(wait, 1, 2) != config.ORDER_2['NUM']:
-        raise Exception(config.ORDER_2['NUM'] + '订单号不对：' +
+    if getTeamInfo(wait, 1, 2) != config.ORDER_1['NUM']:
+        raise Exception(config.ORDER_1['NUM'] + '订单号不对：' +
                         getTeamInfo(wait, 1, 2))
-    if getTeamInfo(wait, 2, 2) != config.ORDER_4['NUM']:
-        raise Exception(config.ORDER_4['NUM'] + '订单号不对：' +
+    if getTeamInfo(wait, 2, 2) != config.ORDER_3['NUM']:
+        raise Exception(config.ORDER_3['NUM'] + '订单号不对：' +
                         getTeamInfo(wait, 2, 2))
-    if getTeamInfo(wait, 3, 2) != config.ORDER_6['NUM']:
-        raise Exception(config.ORDER_6['NUM'] + '订单号不对：' +
+    if getTeamInfo(wait, 3, 2) != config.ORDER_5['NUM']:
+        raise Exception(config.ORDER_5['NUM'] + '订单号不对：' +
                         getTeamInfo(wait, 3, 2))
-    if getTeamInfo(wait, 4, 2) != config.ORDER_8['NUM']:
-        raise Exception(config.ORDER_8['NUM'] + '订单号不对：' +
+    if getTeamInfo(wait, 4, 2) != config.ORDER_7['NUM']:
+        raise Exception(config.ORDER_7['NUM'] + '订单号不对：' +
                         getTeamInfo(wait, 4, 2))
 
 
